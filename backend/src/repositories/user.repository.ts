@@ -19,7 +19,8 @@ export class UserRepository {
     }
 
     async findById(id: string): Promise<IUser | null> {
-        return User.findOne({ id });
+        console.log('find by id', id);
+        return User.findOne({ _id: id });
     }
 }
 

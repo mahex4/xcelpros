@@ -86,7 +86,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
             res.status(401).json({ error: "Unauthorized" });
             return;
         }
-
+        
         const user = await userRepository.findById(userId);
         if (!user) {
             res.status(404).json({ error: "User not found" });
