@@ -1,0 +1,77 @@
+'use client'
+import { useActionState } from 'react'
+import { signup } from './actions'
+import { Input } from '@/components/ui/input'
+import { SignUpFormState } from '@/lib/definitions'
+import { Button } from '@/components/ui/button'
+
+
+const initialState: SignUpFormState = {
+    errors: {},
+    values: {
+        firstName: "",
+        lastName: "",
+        email: ""
+    },
+    success: undefined,
+}
+
+export default function SignupForm() {
+    const [state, action, pending] = useActionState(signup, initialState)
+
+    return (
+        <section className=" w-full h-screen flex flex-col gap-8 justify-end md:justify-center items-center px-6 pb-8">
+            <div className="flex flex-col gap-2 justify-center items-center">
+                <h1 className=' text-2xl font-semibold'>Sign In</h1>
+                <p className='text-center text-sm'>Sign in to access your dashboard and <br />continue tracking your progress</p>
+            </div>
+            <form action={action} noValidate className='flex flex-col w-full md:w-1/4'>
+                <div className='flex flex-col justify-center items-center'>
+                    <label htmlFor="firstName" className='sr-only'>First Name</label>
+                    <Input id="firstName" name="firstName" placeholder="First Name" defaultValue={state.values?.firstName?.toString() ?? ''} />
+                    <div className="self-start min-h-6 flex justify-center items-center">
+                        {state?.errors?.firstName && <p className='text-xs text-red-500'>{state.errors.firstName}</p>}
+                    </div>
+                </div>
+
+
+                <div className='flex flex-col justify-center items-center'>
+                    <label htmlFor="lastName" className='sr-only'>Name</label>
+                    <Input id="lastName" name="lastName" placeholder="Last Name" defaultValue={state?.values?.lastName?.toString() ?? ''} />
+                    <div className="self-start min-h-6 flex justify-center items-center">
+                        {state?.errors?.lastName && <p className='text-xs text-red-500'>{state.errors.lastName}</p>}
+                    </div>
+                </div>
+
+                <div className='flex flex-col justify-center items-center'>
+                    <label htmlFor="email" className='sr-only'>Email</label>
+                    <Input id="email" name="email" placeholder="Email" defaultValue={state?.values?.email?.toString()} />
+                    <div className="self-start min-h-6 flex justify-center items-center">
+                        {state?.errors?.email && <p className='text-xs text-red-500'>{state.errors.email}</p>}
+                    </div>
+                </div>
+
+                <div className='flex flex-col justify-center items-center'>
+                    <label htmlFor="password" className='sr-only'>Password</label>
+                    <Input id="password" name="password" type="password" placeholder='Enter Password' />
+                    <div className="my-4 w-full">
+                        {state?.errors?.password && (
+                            <div className='self-start p-4 min-h-6 rounded-md border w-full flex flex-col justify-start items-start'>
+                                <p className='text-xs text-red-500 mb-1'>Password must:</p>
+                                <ul className='pl-4'>
+                                    {state.errors.password.map((error) => (
+                                        <li className='text-xs text-red-500' key={error}>◦ {error}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <Button disabled={pending} type="submit">
+                    Sign Up
+                </Button>
+            </form>
+        </section>
+    )
+}
