@@ -17,6 +17,10 @@ export class UserRepository {
     async findByEmail(email: string): Promise<IUser | null> {
         return User.findOne({ email });
     }
+
+    async findById(id: string): Promise<IUser | null> {
+        return User.findOne({ id });
+    }
 }
 
 export const userRepository = new UserRepository();
