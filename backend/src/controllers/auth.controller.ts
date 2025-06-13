@@ -5,6 +5,7 @@ import { userRepository } from "../repositories/user.repository";
 import { ZodError } from "zod";
 import { MongoError } from "mongodb";
 import dotenv from "dotenv";
+import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 dotenv.config();
 
 export const register = async (
@@ -13,6 +14,8 @@ export const register = async (
     next: NextFunction
 ) => {
     try {
+        console.log("🔵 [register] called");
+        console.log("🔵 [register] body:", req.body);
         const validatedData = registerSchema.parse(req.body);
         const user = await userRepository.save({
             firstName: validatedData.firstName,
@@ -28,6 +31,8 @@ export const register = async (
             .status(201)
             .json({ message: "User registered successfully", token });
     } catch (error: unknown) {
+        console.error("🔴 [register] error:", error);
+
         if (error instanceof MongoError && error.code === 11000) {
             return res.status(400).json({ error: "Email already in use" });
         }
@@ -71,3 +76,27 @@ export const login = async (
         next(error);
     }
 };
+
+export const getMe = async (req: Request, res: Response): Promise<void> => {
+    console.log("🟢 /auth/me hit");
+    try {
+        const userId = (req as any).user?.id;
+
+        if (!userId) {
+            res.status(401).json({ error: "Unauthorized" });
+            return;
+        }
+        
+        const user = await userRepository.findById(userId);
+        if (!user) {
+            res.status(404).json({ error: "User not found" });
+            return;
+        }
+
+        const { _id, firstName, lastName, email } = user;
+        res.json({ _id, firstName, lastName, email });
+    } catch (err) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
+  

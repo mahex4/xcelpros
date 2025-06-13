@@ -1,6 +1,7 @@
 import { RequestHandler, Router } from "express";
 import * as authController from "../controllers/auth.controller";
 import rateLimit from "express-rate-limit";
+import { requireAuth } from "../middlewares/auth.middleware";
 const router = Router();
 
 const authLimiter = rateLimit({
@@ -16,8 +17,20 @@ const authLimiter = rateLimit({
 router.post(
     "/register",
     authLimiter,
+    (req, res, next) => {
+        console.log("✅ Register route hit");
+        next();
+    },
     authController.register as RequestHandler
 );
+
 router.post("/login", authLimiter, authController.login as RequestHandler);
+
+// router.get("/me", requireAuth, authController.getMe);
+router.get("/me", (req, res, next) => {
+    console.log("🟢 [/auth/me] route matched");
+    next(); // proceed to middleware and controller
+}, requireAuth, authController.getMe);
+  
 
 export default router;

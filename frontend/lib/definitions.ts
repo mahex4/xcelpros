@@ -38,26 +38,43 @@ export const SignInFormSchema = z.object({
         .trim(),
 })
 
-export type SignUpFormState =
-    | {
-        errors: {
-            firstName?: string[];
-            lastName?: string[];
-            email?: string[];
-            password?: string[];
-        };
-        values: {
-            firstName: string;
-            lastName: string;
-            email: string;
-        };
-        success?: undefined;
-    }
-    | {
-        success: true;
-        errors?: undefined;
-        values?: undefined;
-      };
+// export type SignUpFormState =
+//     | {
+//         errors: {
+//             firstName?: string[];
+//             lastName?: string[];
+//             email?: string[];
+//             password?: string[];
+//         };
+//         values: {
+//             firstName: string;
+//             lastName: string;
+//             email: string;
+//         };
+//         success?: undefined;
+//     }
+//     | {
+//         success: true;
+//         errors?: undefined;
+//         values?: undefined;
+//       };
+
+export type SignUpFormState = {
+    success?: boolean;
+    error?: string;
+    errors?: {
+        firstName?: string[];
+        lastName?: string[];
+        email?: string[];
+        password?: string[];
+    };
+    values?: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+};
+  
 
 
 export type SignInFormState =

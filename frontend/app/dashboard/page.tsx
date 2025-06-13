@@ -1,14 +1,16 @@
-import { redirect } from 'next/navigation';
-import { getUserFromToken } from '@/lib/auth';
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
-    const user = await getUserFromToken();
+    const user = await getCurrentUser();
 
-    if (!user) redirect('/signin');
+    if (!user) {
+        redirect('/signup')
+    }
 
     return (
-        <div>
-            <h1>Welcome {user.aud}</h1>
+        <div className="text-xl font-semibold">
+            Welcome, {user.firstName} {user.lastName}
         </div>
     );
 }
