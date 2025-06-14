@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: xcelpros-frontend
+    env: docker
+    plan: free
+    dockerfilePath: frontend/Dockerfile
+    buildCommand: docker build -t xcelpros-frontend ./frontend
+    startCommand: docker run -p 3000:3000 xcelpros-frontend
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 3000
+
+  - type: web
+    name: xcelpros-backend
+    env: docker
+    plan: free
+    dockerfilePath: backend/Dockerfile
+    buildCommand: docker build -t xcelpros-backend ./backend
+    startCommand: docker run -p 5000:5000 xcelpros-backend
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 5000
