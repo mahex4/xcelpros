@@ -76,21 +76,32 @@ export type SignUpFormState = {
 };
   
 
-
-export type SignInFormState =
-    | {
-        errors: {
-            email?: string[];
-            password?: string[];
-        };
-        values: {
-            email: string;
-        };
-        success?: undefined;
-    }
-    | {
-        success: true;
-        errors?: undefined;
-        values?: undefined;
+export type SignInFormState = {
+    success?: boolean;
+    error?: string;
+    errors?: {
+        email?: string[];
+        password?: string[];
     };
+    values?: {
+        email: string;
+    };
+};
+
+// export type SignInFormState =
+//     | {
+//         errors: {
+//             email?: string[];
+//             password?: string[];
+//         };
+//         values: {
+//             email: string;
+//         };
+//         success?: undefined;
+//     }
+//     | {
+//         success: true;
+//         errors?: undefined;
+//         values?: undefined;
+//     };
   

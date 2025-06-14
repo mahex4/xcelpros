@@ -5,8 +5,6 @@ import { redirect } from "next/navigation";
 
 export async function signin(state: SignInFormState, formData: FormData) {
     const cookie = await cookies();
-    const firstName = String(formData.get("firstName") ?? "");
-    const lastName = String(formData.get("lastName") ?? "");
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
@@ -54,7 +52,7 @@ export async function signin(state: SignInFormState, formData: FormData) {
     
     return { 
         success: true,
-        values: { firstName, lastName, email, password },
+        values: { email, password },
     } as const;   
 
     // const res = await fetch(`${process.env.API_URL}/auth/register`, {
