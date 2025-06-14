@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: xcelpros-frontend
+    env: docker
+    plan: free
+    dockerfilePath: frontend/Dockerfile
+    buildCommand: docker build -t xcelpros-frontend ./frontend
+    startCommand: docker run -p 3000:3000 xcelpros-frontend
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_BACKEND_URL
+        value: http://backend:5050
+      - key: BACKEND_URL
+        value: http://backend:5050
+
+  - type: web
+    name: xcelpros-backend
+    env: docker
+    plan: free
+    dockerfilePath: backend/Dockerfile
+    buildCommand: docker build -t xcelpros-backend ./backend
+    startCommand: docker run -p 5050:5050 xcelpros-backend 
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5050
+      - key: MONGODB_URI
+        value: mongodb+srv://mahex4:zSojDeQLlaNm8p62@darthcluster.tzej0m7.mongodb.net/?retryWrites=true&w=majority&appName=DarthCluster
+      - key: JWT_SECRET
+        value: 85259f53f5ba1a15478ede9a29eac93a931cd24fd01f7bbf9b960e0a141bba3f
+      - key: USDA_API_KEY
+        value: f1MT1jO2Ts38y7axEg4v6H46stJdWgHFoN1RMUp8
+      - key: USDA_PAGE_SIZE
+        value: 50

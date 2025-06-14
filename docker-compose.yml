@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - 5050:5050
+    volumes:
+      - ./backend:/app
+    environment:
+      NODE_ENV: production
+      PORT: 5050
+      MONGODB_URI: mongodb+srv://mahex4:zSojDeQLlaNm8p62@darthcluster.tzej0m7.mongodb.net/?retryWrites=true&w=majority&appName=DarthCluster
+      JWT_SECRET: 85259f53f5ba1a15478ede9a29eac93a931cd24fd01f7bbf9b960e0a141bba3f
+      USDA_API_KEY: f1MT1jO2Ts38y7axEg4v6H46stJdWgHFoN1RMUp8
+      USDA_PAGE_SIZE: 50
+
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_BACKEND_URL: http://backend:5050
+      BACKEND_URL: "http://backend:5050"
+    depends_on:
+      - backend
