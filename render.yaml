@@ -5,7 +5,6 @@ services:
     plan: free
     dockerfilePath: frontend/Dockerfile
     buildCommand: docker build -t xcelpros-frontend ./frontend
-    startCommand: docker run -p 3000:3000 xcelpros-frontend
     autoDeploy: true
     healthCheckPath: /
     envVars:
@@ -14,9 +13,9 @@ services:
       - key: PORT
         value: 3000
       - key: NEXT_PUBLIC_BACKEND_URL
-        value: http://backend:5050
+        value: https://xcelpros-backend.onrender.com
       - key: BACKEND_URL
-        value: http://backend:5050
+        value: https://xcelpros-backend.onrender.com
 
   - type: web
     name: xcelpros-backend
@@ -24,7 +23,6 @@ services:
     plan: free
     dockerfilePath: backend/Dockerfile
     buildCommand: docker build -t xcelpros-backend ./backend
-    startCommand: docker run -p 5050:5050 xcelpros-backend 
     autoDeploy: true
     envVars:
       - key: NODE_ENV
